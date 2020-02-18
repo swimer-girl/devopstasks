@@ -1,0 +1,6 @@
+---
+
+script: task1.sh
+subroutine: conf_template
+begin_patr: <$>
+end_patr: <>
