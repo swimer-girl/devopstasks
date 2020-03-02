@@ -1,0 +1,27 @@
+---
+
+- name: Uninstall Apache
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Stop Apache
+    service: name=httpd state=stopped
+
+  - name: Remove file
+    file:
+      path: /var/www/html/index.html
+      state: absent
+
+  - name: Uninstall Apache
+    yum: name=httpd state=absent
+
+  - name: Close port 80 for http access
+    firewalld:
+      service: http
+      permanent: yes
+      state: disabled
+  - name: Restart firewall service to load rule
+    service:
+      name: firewalld
+      state: restarted

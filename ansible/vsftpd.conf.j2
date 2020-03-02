@@ -1,0 +1,17 @@
+ftpd_banner={{ vsftpd_ftpd_banner }}
+listen=YES
+anonymous_enable=YES
+xferlog_enable={{ vsftpd_xferlog_enable }}
+use_localtime=YES
+connect_from_port_20=YES
+hide_ids=YES
+delete_failed_uploads=YES
+local_enable=YES
+user_config_dir={{ vsftpd_user_config_dir }}
+virtual_use_local_privs=YES
+write_enable=YES
+guest_enable=YES
+chroot_local_user=YES
+allow_writeable_chroot=YES
+user_sub_token=$USER
+local_root={{ vsftpd_local_root }}/$USER

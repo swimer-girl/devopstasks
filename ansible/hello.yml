@@ -1,0 +1,10 @@
+---
+
+- name: hello
+  hosts: all
+  become: yes
+
+  tasks:
+
+  - name: hello
+    shell: " echo 'Hello from Ansible' >> /etc/motd "

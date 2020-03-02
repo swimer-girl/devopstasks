@@ -1,0 +1,10 @@
+---
+
+- name: file
+  hosts: node1.example.com
+  become: yes
+
+  tasks:
+
+  - name: file
+    shell: " touch /tmp/database "

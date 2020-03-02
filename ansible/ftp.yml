@@ -1,0 +1,48 @@
+---
+
+- name: Install VSFTP
+  hosts: all
+  become: yes
+  
+  vars:
+    vsftpd_ftpd_banner: Welcome to FTP
+    vsftpd_xferlog_enable: 'YES'
+    vsftpd_local_root: /srv/ftp
+    vsftpd_user_config_dir: /etc/vsftpd.d
+
+  tasks:
+  - name: Install FTP
+    yum: name=vsftpd state=present
+
+  - name: Install Firewalld
+    yum: name=firewalld state=present
+
+  - name: Start Firewall Service
+    service: name=firewalld state=started enabled=yes
+
+  - name: Start FTP Service
+    service: name=vsftpd state=started enabled=yes
+
+  - name: Allow FTP service in Firewall
+    firewalld: port=21/tcp permanent=true state=enabled immediate=true
+
+  - name: Create directory for user configuration
+    command: mkdir {{ vsftpd_user_config_dir }} creates={{ vsftpd_user_config_dir }}
+
+  - name: Create directory for key local_root from vsftpd.conf
+    command: mkdir {{ vsftpd_local_root }} creates={{ vsftpd_local_root }} owner=root group=root
+
+  - name: Create home dir for anonymous user if it does not exists
+    file:
+      path: /var/ftp/pub
+      state: directory
+      mode: 0755
+
+  - name: Copy config file of the vsftpd
+    template: src=vsftpd.conf.j2 dest=/etc/vsftpd.conf mode=644 backup=yes
+    notify:
+    - Restart vsftpd
+
+  handlers:    
+  - name: Restart vsftpd
+    service: name=vsftpd state=restarted

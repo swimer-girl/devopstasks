@@ -1,0 +1,34 @@
+---
+
+- name: Install Apache
+  hosts: all
+  become: yes
+
+  vars:
+    source_file: ./index.html
+    destin_file: /var/www/html
+
+  tasks:
+  - name: Install Apache webserver
+    yum: name=httpd state=latest
+
+  - name: Copy File to hosts
+    copy: src={{ source_file }} dest={{ destin_file }} mode=0555
+    notify: Restart Apache
+
+  - name: Start Apache and Enable after boot
+    service: name=httpd state=started enabled=yes
+
+  - name: Open port 80 for http access
+    firewalld:
+      service: http
+      permanent: yes
+      state: enabled
+  - name: Restart firewall service to load rule
+    service:
+      name: firewalld
+      state: restarted
+
+  handlers:
+  - name: Restart Apache
+    service: name=httpd state=restarted

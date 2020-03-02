@@ -1,0 +1,22 @@
+---
+
+- name: Change grub file for network manager
+  hosts: all
+  become: yes
+
+  vars:
+    grub_mkconfig_cmd: grub2-mkconfig
+    grub_output_config: /boot/grub2/grub.cfg
+    grub_input_config: /etc/default/grub
+
+  tasks:
+  - name: Update Grub
+    lineinfile:
+      dest: "{{ grub_input_config}}"
+      regexp: GRUB_CMDLINE_LINUX
+      line: 'GRUB_CMDLINE_LINUX="no_timer_check console=tty0 console=ttyS0,115200n8 net.ifnames=0 biosdevname=0 elevator=noop crashkernel=auto"'
+    notify: Make Grub config
+
+  handlers:
+  - name: Make Grub config
+    command: "{{ grub_mkconfig_cmd }} -o {{ grub_output_config }}"
