@@ -7,17 +7,14 @@
   tasks:
 
   - name:  Check if file is exists
-    shell: "test -f /tmp/database"
-    register: is_exists
+    shell: test -f /tmp/database %%echo "#FILE is exists"
+    register: result
 
   - name: Install mariadb-server
     yum:
       name: mariadb-server
       state: latest
-    when: is_exists == 1
+    when: result.stdout | length > 0
 
   - name: Start and Enable mariadb-server
     service: name=mariadb state=started enabled=yes
-
-  - name: Create a new database
-    mysql_db: name=database state=present
