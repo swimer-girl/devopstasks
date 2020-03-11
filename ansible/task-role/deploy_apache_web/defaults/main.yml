@@ -1,0 +1,25 @@
+---
+# defaults file for deploy_apache_web
+
+destin_folder: /var/www/html
+
+apache_listen_ip: "*"
+apache_listen_port: 80
+apache_create_vhosts: true
+apache_vhosts_filename: "vhosts.conf"
+apache_vhosts_template: "vhosts.conf.j2"
+
+apache_global_vhost_settings: |
+  DirectoryIndex index.php index.html
+
+apache_vhosts:
+  - servername: "local.dev"
+    documentroot: "/var/www/html"
+
+apache_allow_override: "All"
+apache_options: "-Indexes +FollowSymLinks"
+apache_service: httpd
+apache_daemon: httpd
+apache_daemon_path: /usr/sbin/
+apache_server_root: /etc/httpd
+apache_conf_path: /etc/httpd/conf.d

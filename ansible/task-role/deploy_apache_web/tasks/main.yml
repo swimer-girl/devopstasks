@@ -1,0 +1,26 @@
+---
+# tasks file for deploy_apache_web
+
+- name: Install Apache webserver
+  yum: name=httpd state=latest
+
+- name: Copy File to hosts
+  copy: src=index.html dest={{ destin_folder }} mode=0555
+  notify: Restart Apache
+
+- name: Configure Apache.
+  include_tasks: "configure.yml"
+
+- name: Start Apache and Enable after boot
+  service: name=httpd state=started enabled=yes
+
+- name: Open port 80 for http access
+  firewalld:
+    service: http
+    permanent: yes
+    state: enabled
+    
+- name: Restart firewall service to load rule
+  service:
+    name: firewalld
+    state: restarted
