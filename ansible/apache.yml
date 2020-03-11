@@ -24,6 +24,7 @@
       service: http
       permanent: yes
       state: enabled
+      
   - name: Restart firewall service to load rule
     service:
       name: firewalld
