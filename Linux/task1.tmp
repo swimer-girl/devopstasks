@@ -1,0 +1,10 @@
+OSTYPE = {%OSTYPE%}
+LANG = {%LANG%}
+BASH = {%BASH%}
+HOSTNAME = {%HOSTNAME%}
+empty = {%string%}
+USER = {%USER%}
+HOME = {%HOME%}
+PWD = {%PWD%}
+VAR = {%VAR%}
+VAR2 = {%VAR2%}

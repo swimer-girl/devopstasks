@@ -1,5 +1,8 @@
 #!/bin/bash
-source ./task2.config
+
+CONFPATH=$(dirname "$0")
+
+. ${CONFPATH}/task2.config
 
 #Create the locking dir if it doesn't exist
 if [[ ! -d "/lockdir/" ]]; then 
