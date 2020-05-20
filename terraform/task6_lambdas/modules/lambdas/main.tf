@@ -17,6 +17,25 @@ resource "aws_iam_role" "iam_for_lambdas" {
 EOF
 }
 
+resource "aws_iam_role_policy" "dynamodb-lambda-policy"{
+  name = "dynamodb_lambda_policy"
+  role = aws_iam_role.iam_for_lambdas.id
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:*"
+      ],
+      "Resource": "arn:aws:dynamodb:us-east-1:590626878535:table/task5_dynamodb"
+    }
+  ]
+}
+EOF
+}
+
 resource "aws_lambda_permission" "allow_bucket" {
   statement_id  = "AllowExecutionFromS3Bucket"
   action        = "lambda:InvokeFunction"
